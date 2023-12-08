@@ -1,0 +1,7 @@
+.idea
+node_modules
+.env
+package-lock.json
+coverage
+auth-api/config/database/test.json
+*.pem
