@@ -9,11 +9,6 @@ const pgclient = new Client({
     database: 'postgres'
 });
 
-console.log('PGHOST:', process.env.PGHOST);
-console.log('PGPORT:', process.env.PGPORT);
-console.log('PGUSER:', process.env.PGUSER);
-console.log('PGPASSWORD:', process.env.PGPASSWORD);
-
 pgclient.connect();
 
 const checkdb = `SELECT 1 from pg_database WHERE datname='authapi'`;
