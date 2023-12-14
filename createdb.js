@@ -10,7 +10,7 @@ const pgclient = new Client({
 
 pgclient.connect();
 
-const sql = 'CREATE DATABASE authapi';
+const sql = 'CREATE DATABASE IF NOT EXISTS authapi';
 
 pgclient.query(sql, (err, res) => {
     if (err) throw err
