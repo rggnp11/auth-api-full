@@ -1,3 +1,4 @@
+require('dotenv').config();
 const { Client } = require('pg');
 
 const pgclient = new Client({
@@ -8,12 +9,33 @@ const pgclient = new Client({
     database: 'postgres'
 });
 
+console.log('PGHOST:', process.env.PGHOST);
+console.log('PGPORT:', process.env.PGPORT);
+console.log('PGUSER:', process.env.PGUSER);
+console.log('PGPASSWORD:', process.env.PGPASSWORD);
+
 pgclient.connect();
 
-const sql = 'CREATE DATABASE IF NOT EXISTS authapi';
+const checkdb = `SELECT 1 from pg_database WHERE datname='authapi'`;
 
-pgclient.query(sql, (err, res) => {
+let rowCount = 0;
+
+pgclient.query(checkdb, (err, res) => {
     if (err) throw err
-    console.log('Database authapi created');
-    pgclient.end();
+    rowCount = res.rowCount;
+
+    console.log('rowCount:', rowCount);
+
+    if (rowCount == 0) {
+        const createdb = 'CREATE DATABASE authapi';
+    
+        pgclient.query(createdb, (err, res) => {
+            if (err) throw err
+            console.log('Database authapi created');
+            pgclient.end();    
+        });
+    } else {
+        console.log('Database authapi already exists');
+        pgclient.end();
+    }
 });
